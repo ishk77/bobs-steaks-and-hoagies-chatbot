@@ -44,30 +44,10 @@ CYPHER_PROMPT = f"""You are a Cypher query generator for a Neo4j graph of a rest
 
 Rules:
 - Respond with ONLY a valid Cypher query. No explanation, no markdown, no code fences.
-- Always use the node variable (not the label) in WHERE clauses and RETURN: e.g. MATCH (m:MenuItem) WHERE m.price < 10
 - Always alias return values with AS (e.g. m.name AS name, m.price AS price).
 - Use case-insensitive matching where helpful: toLower(m.name) CONTAINS toLower('keyword')
 - If the question truly cannot be answered from this graph, return exactly:
     RETURN "Not available" AS answer
-
-Examples:
-Q: What items are under $10?
-A: MATCH (m:MenuItem) WHERE m.price IS NOT NULL AND m.price < 10 RETURN m.name AS name, m.price AS price ORDER BY m.price
-
-Q: What are the vegan options?
-A: MATCH (m:MenuItem) WHERE m.isVegan = true RETURN m.name AS name, m.price AS price
-
-Q: What items have mushrooms?
-A: MATCH (m:MenuItem)-[:INCLUDES]->(t:Topping {{name: "Mushrooms"}}) RETURN m.name AS name, m.price AS price
-
-Q: What is the cheapest burger?
-A: MATCH (c:Category {{name: "100% Homemade Burgers"}})-[:HAS_ITEM]->(m:MenuItem) WHERE m.price IS NOT NULL RETURN m.name AS name, m.price AS price ORDER BY m.price LIMIT 1
-
-Q: What toppings are free on steaks?
-A: MATCH (c:Category {{name: "Fresh Cut Rib-Eye Steaks"}})-[:OFFERS_FREE]->(t:Topping) RETURN t.name AS topping
-
-Q: What cheese options are available?
-A: MATCH (ch:Cheese) RETURN ch.name AS cheese, ch.upcharge AS upcharge ORDER BY ch.upcharge
 """
 
 ANSWER_PROMPT = """You are a friendly, helpful chatbot for Bob's Steaks and Hoagies.
