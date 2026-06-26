@@ -86,6 +86,7 @@ def generate_and_run(question: str, history: list[dict], driver, max_retries: in
                 "content": f"That query failed with this error:\n{e}\n\nReturn only the corrected Cypher query."
             })
 
+    assert last_error is not None
     raise last_error
 
 
